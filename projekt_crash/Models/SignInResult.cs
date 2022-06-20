@@ -1,6 +1,6 @@
 ﻿using CrashApp.Data.Entities;
 
-namespace projekt_crash.Models
+namespace CrashApp.Models
 {
     public class SignInResult
     {

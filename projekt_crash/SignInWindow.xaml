@@ -1,0 +1,46 @@
+﻿<Window x:Class="CrashApp.SignInWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CrashApp"
+        mc:Ignorable="d"
+        Title="Sign In" WindowStartupLocation="CenterScreen" Height="300" Width="450" ResizeMode="NoResize" Background="Black" Loaded="LoginWindow_Loaded">
+
+    <StackPanel Orientation="Vertical" Background="#a6d9ef" Margin="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+        <Border CornerRadius="25" Margin="20,10,20,10" BorderBrush="Red" Background="White" Width="330">
+            <StackPanel Orientation="Vertical">
+                <Label Content="Welcome At Crash" FontSize="25" HorizontalAlignment="Center" FontWeight="Bold" Margin="2,5,2,0" VerticalContentAlignment="Bottom"/>
+                <Label Content="Please Login to Proceed" FontSize="20" HorizontalContentAlignment="Center" FontWeight="Medium" Margin="2,0,2,10" FontStyle="Italic" VerticalContentAlignment="Top"/>
+
+                <Grid Margin="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Margin="0,5" Content="Username:" VerticalContentAlignment="Center"
+                                        HorizontalContentAlignment="Right"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="tbxUsername" Margin="0,5" Width="150" VerticalContentAlignment="Center"
+                                          HorizontalContentAlignment="Left"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Margin="0,5" Content="Password : " VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                    <PasswordBox Grid.Row="1" Grid.Column="1" x:Name="tbxPassword" Margin="0,5" Width="150" 
+                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                        <Button Content="LOGIN" x:Name="btnLogin" Margin="2,10" Width="100" Height="30" Background="#80ff00" Foreground="Black" BorderBrush="White" Click="btnLogin_Click"/>
+                    </StackPanel>
+
+                </Grid>
+                <Label Height="30" Width="210">
+                    <Hyperlink x:Name="hyperLinkShowNewPlayerWindow" Click="Hyperlink_Click"  Foreground="Black" >Not a Member? Click here to Register</Hyperlink>
+                </Label>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Window>

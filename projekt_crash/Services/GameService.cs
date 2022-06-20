@@ -1,23 +1,29 @@
-﻿using CrashApp.Data.Entities;
+﻿using CrashApp.Constants;
+using CrashApp.Data;
+using CrashApp.Data.Entities;
+using CrashApp.Models;
 using System;
 using System.Security.Cryptography;
-using System.Timers;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
-namespace projekt_crash.Services
+namespace CrashApp.Services
 {
     public class GameService
     {
+        private readonly HighScoreService _highScoreService = new HighScoreService();
+
         private readonly int _multiplierInterval = 200;
 
         private int _millisecondsToStopTheGame;
         private int _currentMillisecondsPassed;
 
-        private readonly Timer _multiplierTimer;
-
+        private readonly DispatcherTimer _multiplierTimer;
+        
         private decimal _multiplier = 0;
 
-        public event Action<decimal> OnMultiplierChange;
-        public event Action<Game> OnGameFinish;
+        public event Action<decimal, decimal> OnMultiplierChange;
+        public event Action<FinishedGameResult> OnGameFinish;
 
         private Player _player;
 
@@ -28,8 +34,14 @@ namespace projekt_crash.Services
         public GameService(Player player)
         {
             _player = player;
-            _multiplierTimer = new Timer(_multiplierInterval);
-            _multiplierTimer.Elapsed += _timer_Elapsed;
+
+            // DispatcherPriority.Normal sprawia, że inkrementacja mnożnika jest płynna i regularna 
+            _multiplierTimer = new DispatcherTimer(DispatcherPriority.Normal)
+            {
+                Interval = TimeSpan.FromMilliseconds(_multiplierInterval)
+            };
+
+            _multiplierTimer.Tick += _timer_Tick;
         }
 
         public void StartNewGame(decimal bet)
@@ -43,47 +55,87 @@ namespace projekt_crash.Services
             _bet = bet;
             _currentMillisecondsPassed = 0;
             _millisecondsToStopTheGame = RandomNumberGenerator.GetInt32(3000, 10_000);
+
+            _multiplierTimer.Start();
         }
 
-        public void StopCurrentGame()
+        public async Task StopCurrentGameAsync()
         {
             if (!_isGameRunning)
             {
                 throw new InvalidOperationException("Żadna gra nie jest w toku.");
             }
 
-            _isGameRunning = false;
-
-            var wonGame = CreateGame(true);
-            OnGameFinish?.Invoke(wonGame);
+            await StopCurrentGameAsync(true);
         }
 
-        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        public async Task SaveGameAsync(Game game)
+        {
+            StaticContext.Context.Games.Add(game);
+            await StaticContext.Context.SaveChangesAsync();
+
+            if (game.GameWin)
+            {
+                int gameHighScorePlace = await _highScoreService.GetGameHighScorePlaceAsync(game);
+
+                bool isNewHighScore = gameHighScorePlace <= SettingConstants.HIGH_SCORE_GAME_MAX_AMOUNT;
+
+                if (isNewHighScore)
+                {
+                    await _highScoreService.SaveGameAsHighScoreAsync(game);
+                } 
+            }
+        }
+
+        private async void _timer_Tick(object sender, EventArgs e)
         {
             _multiplier += 0.1m;
-            OnMultiplierChange?.Invoke(_multiplier);
+
+            decimal updatedPrize = _multiplier * _bet;
+
+            OnMultiplierChange?.Invoke(_multiplier, updatedPrize);
             _currentMillisecondsPassed += _multiplierInterval;
 
             if (_currentMillisecondsPassed >= _millisecondsToStopTheGame)
             {
-                _multiplierTimer.Stop();
-                var lostGame = CreateGame(false);
-                OnGameFinish?.Invoke(lostGame);
+                await StopCurrentGameAsync(false);
             }
         }
 
-        private Game CreateGame(bool isWin)
+        private async Task StopCurrentGameAsync(bool isWin)
         {
+            _multiplierTimer.Stop();
+            _isGameRunning = false;
+            var game = await CreateFinishedGameResultAsync(isWin);
+            _multiplier = 0;
+            OnGameFinish?.Invoke(game);
+        }
+
+        private async Task<FinishedGameResult> CreateFinishedGameResultAsync(bool isWin)
+        {
+            decimal prize = _bet * _multiplier;
+
             var game = new Game
             {
                 Player = _player,
                 Multiplier = _multiplier,
                 Bet = _bet,
-                Prize = isWin ? _bet * _multiplier : 0,
+                Prize = prize,
                 GameWin = isWin
             };
 
-            return game;
+            int gameHighScorePlace = await _highScoreService.GetGameHighScorePlaceAsync(game);
+
+            bool isNewHighScore = gameHighScorePlace <= SettingConstants.HIGH_SCORE_GAME_MAX_AMOUNT;
+
+            var finishedGameResult = new FinishedGameResult
+            {
+                Game = game,
+                IsNewHighScore = isNewHighScore,
+                HighScorePlace = gameHighScorePlace
+            };
+
+            return finishedGameResult;
         }
     }
 }

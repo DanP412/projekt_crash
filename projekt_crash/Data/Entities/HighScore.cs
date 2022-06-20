@@ -8,10 +8,5 @@ namespace CrashApp.Data.Entities
 
         public virtual int GameId { get; set; }
         public virtual Game Game { get; set; }
-
-        //public HighScore()
-        //{
-        //    Games = new HashSet<Game>();
-        //}
     }
 }
