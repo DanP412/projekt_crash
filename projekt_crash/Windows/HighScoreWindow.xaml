@@ -1,0 +1,34 @@
+﻿<Window x:Class="CrashApp.Windows.HighScoreWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CrashApp.Windows"
+        mc:Ignorable="d"
+        Title="High Scores" Height="450" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <DataGrid x:Name = "dGridHighScores"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                            <Setter Property="Background" Value="LightBlue" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="30" Binding="{Binding Number}"/>
+                <DataGridTextColumn Width="*" Header="Date" Binding="{Binding HighScore.Date, StringFormat=\{0:dd.MM.yyyy\}}" />
+                <DataGridTextColumn Width="*" Header="Player" Binding="{Binding PlayerDescription}" />
+                <DataGridTextColumn Width="*" Header="Multiplier" Binding="{Binding HighScore.Game.Multiplier}" />
+                <DataGridTextColumn Width="*" Header="Prize" Binding="{Binding HighScore.Game.Prize, StringFormat=C2}" />
+            </DataGrid.Columns>
+
+        </DataGrid>
+    </Grid>
+</Window>

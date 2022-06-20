@@ -1,0 +1,139 @@
+﻿<Window x:Class="CrashApp.Windows.GameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CrashApp.Windows"
+        mc:Ignorable="d"
+        Title="Player/Game" Height="520" Width="900" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Grid.Row="0">
+                <Border BorderBrush="Black" BorderThickness="2"
+                        Margin="10 10 10 10">
+                    <StackPanel>
+                        <Label x:Name="lblWelcome"
+                               Content="Hi,"
+                               Height="50" Width="250"
+                               HorizontalAlignment="Left" Margin="5 5 0 0"
+                               FontSize="20"/>
+
+                        <Label x:Name="lblBalance"
+                               Content="Your balance:"
+                               Height="50" Width="250"
+                               HorizontalAlignment="Left" Margin="5 0 0 0"
+                               FontSize="20"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="0"
+                        Orientation="Horizontal">
+                <Button x:Name="btnFAQ"
+                        Content="Show FAQ"
+                        Height="40" Width="150"
+                        VerticalAlignment="Top" Margin="10 10 0 0"
+                        FontSize="15" 
+                        Click="btnFAQ_Click"/>
+
+                <Button x:Name="btnShowHighScoreWindow"
+                        Content="High Scores"
+                        Height="40" Width="150"
+                        VerticalAlignment="Top" Margin="10 10 0 0"
+                        FontSize="15"
+                        Click="btnShowHighScoreWindow_Click"/>
+
+                <Button x:Name="btnSignOut"
+                        Content="Sign out"
+                        Height="40" Width="150"
+                        VerticalAlignment="Top" Margin="10 10 0 0"
+                        FontSize="15"
+                        Click="btnSignOut_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <Border BorderBrush="Black" BorderThickness="2"
+                        Margin="10 0 0 0">
+                    <StackPanel Grid.Column="0" Grid.Row="0"
+                                Margin="5 5 5 0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="btnMin"
+                            Content="MIN"
+                            Width="60" Height="50"
+                            Click="btnMin_Click"/>
+                            <Button x:Name="btn100"
+                            Content="100"
+                            Width="60" Height="50"
+                            Click="btn100_Click"/>
+                            <Button x:Name="btnBetHalf"
+                            Content="1/2"
+                            Width="60" Height="50"
+                            Click="btnBetHalf_Click"/>
+                            <Button x:Name="btnMax"
+                            Content="Max"
+                            Width="60" Height="50"
+                            Click="btnMax_Click"/>
+                            <Button x:Name="btnClear"
+                            Content="Clear"
+                            Width="60" Height="50"
+                            Click="btnClear_Click"/>
+                        </StackPanel>
+                        <TextBox x:Name="tbxNewGameBet"
+                                 Margin="0 10 0 0"
+                                 Height="50"
+                                 FontSize="35"/>
+                        <Label x:Name="lblBet"
+                               Content="Bet:" 
+                               FontSize="30"/>
+                    </StackPanel>
+                </Border>
+                <Label x:Name="lblPrize"
+                       Margin="10 0 0 0"
+                       Content="Prize:" 
+                       FontSize="40"/>
+                <Button x:Name="btnStartGame"
+                        Content="START GAME"
+                        Margin="10 10 0 0"
+                        Height="50"
+                        Background="GreenYellow"
+                        FontSize="25"
+                        Click="btnStartGame_Click"/>
+                <Button x:Name="btnCASHOUT"
+                        Content="CASHOUT"
+                        Margin="10 10 0 0"
+                        Height="50"
+                        Background="Yellow"
+                        Visibility="Hidden"
+                        FontSize="25"
+                        Click="btnCASHOUT_Click"/>
+            </StackPanel>
+
+            <Label Grid.Column="1" Grid.Row="0"
+                   x:Name="lblMultiplier"
+                   Content="x0"
+                   FontSize="80" 
+                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        </Grid>
+    </Grid>
+</Window>

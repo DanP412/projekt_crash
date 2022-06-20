@@ -12,6 +12,15 @@
     <None Update="SignInWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Windows\GameWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Windows\HighScoreWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Windows\NewPlayerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
 </Project>
